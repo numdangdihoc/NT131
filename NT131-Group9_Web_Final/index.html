@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NT131.O21- Đồ án</title>
+  <link rel="stylesheet" href="./css/index_2.css">
+  <script type="text/javascript" src="./scripts.js"></script>
+  <script src="https://code.jscharting.com/latest/jscharting.js"></script>
+  <script type="text/javascript" src="https://code.jscharting.com/latest/modules/types.js"></script>
+  <script type="text/javascript" src="https://code.jscharting.com/latest/modules/toolbar.js"></script>
+  <link rel="stylesheet" href="./styles.css">
+  </script>
+  
+  <style>
+    
+    .logo-user img {
+      display: inline-block;
+      vertical-align: middle;
+      padding-top: 15px;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0);
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* CSS cho menu xổ xuống */
+    .dropdown {
+      padding-left: 50%;
+      position: relative;
+
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #4f0bce00;
+      min-width: 130px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content button {
+      white-space: nowrap;
+      font-size: medium;
+      min-width: 150px;
+      background-color: rgba(0, 0, 255, 0);
+      border: #0a0a0a00;
+      color: red;
+      margin-left: 0px;
+      padding: 20px;
+      text-decoration: none;
+      text-align: left;
+    }
+
+    .dropdown:hover .dropdown-content {
+
+      display: block;
+    }
+
+    .dropdown-content button:hover {
+      background-color: aqua;
+    }
+
+    .welcomeUsername p {
+
+      padding-top: 25px;
+      padding-left: 10px;
+      color: rgb(255, 153, 0);
+
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="">
+      <span class="logo-img">
+        <img src="./Image_Folder/canhcut.ico" alt="">
+      </span>
+      <span class="logo-text">
+        <span class="logo-text-tutoring">NT131.O21</span>
+        <span class="logo-text-prodigy">-Nhóm 09</span>
+      </span>
+    </a>
+    
+    <div class="dropdown" style="visibility: visible;">
+      <span class="logo-user">
+        <img src="./Image_Folder/canhcut.ico" alt="">
+      </span>
+      <div class="dropdown-content">
+        <button id="logoutButton">Đăng xuất</button>
+      </div>
+
+    </div>
+    <div class="welcomeUsername" style="visibility:visible;">
+      <p id="username-login">Username</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="nav-header">
+      <ul class="menu-nav">
+        <li class="nav-item">
+          <a href="./index.html">
+            <span>Home</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="" class="sum">
+            <span>Sumary</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="" class="temp_humi">
+            <span>Nhiệt độ- Độ ẩm</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="" class="CO">
+            <span>Nồng độ CO</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="" class="dust">
+            <span>Bụi mịn</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="pagination" id="pagination"></div>
+
+
+  </div>
+
+  <!--CONTENT-->
+  <div class="login-container" style="display: block;">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <input type="text" id="username" name="username" placeholder="Username" required>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p id="message"></p>
+  </div>
+  <div class="big_class" style="display: flex;">
+    <div class="chart_display" style="z-index: 1; margin-left: -10%;">
+      <div class="chart_tmp" style="display: none;">
+        <div id="chartDiv" style="max-width: 640px; height: 230px; margin-right: -14%;"></div>
+        <div id="chartDiv2" style="max-width: 640px; height: 230px; margin-right: -14%"></div>
+        
+      </div>
+    
+      <div class="Chart_block_2" style="display: flex; ">
+        <div id="chartMQ7" style="display: none; max-width: 640px; height: 230px; margin-right: -14%;"></div>
+        <div id="chartDust" style="display: none; max-width: 640px; height: 230px; margin-right: -14%;"></div>
+    
+      </div>
+    </div>
+
+    <div class="minmax_display"  style=" display:none;z-index: 2; margin-left: -17%; margin-top: 3%;" >
+      <p style="margin-left: 40%; margin-bottom: 10px;"> Sumary table</p>
+      <table class="tg" style="table-layout: fixed; width: 432px;">
+        <colgroup>
+        <col style="width: 216.2px">
+        <col style="width: 216.2px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="tg-c3ow" colspan="2">Nhiệt độ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tg-0pky" id="tempmin">Min:</td>
+            <td class="tg-0pky" id="tempmax">Max:</td>
+          </tr>
+          <tr>
+            <td class="tg-d9mu" colspan="2">Độ ẩm</td>
+          </tr>
+          <tr>
+            <td class="tg-0lax" id="humimin">Min: </td>
+            <td class="tg-0lax" id="humimax">Max:</td>
+          </tr>
+          <tr>
+            <td class="tg-d9mu" colspan="2">Nồng độ CO</td>
+          </tr>
+          <tr>
+            <td class="tg-0lax" id="comin">Min:</td>
+            <td class="tg-0lax" id="comax">Max:</td>
+          </tr>
+          <tr>
+            <td class="tg-d9mu" colspan="2">Nồng độ bụi mịn</td>
+          </tr>
+          <tr>
+            <td class="tg-0lax" id="dustmin">Min:</td>
+            <td class="tg-0lax" id="dustmax">Max:</td>
+          </tr>
+        </tbody>
+        </table>
+    </div>
+
+    <!--div line-->
+    <div class="line_graph">
+      <div id="ChartLine" style="max-width: 740px;height: 400px;margin: 0px auto;"></div>
+      <div id="Chart2Line" style="max-width: 740px;height: 400px;margin: 0px auto;"></div>
+    </div>
+
+  </div>
+  
+  
+
+
+
+</body>
+
+
+<footer>
+  <div class="nav-contact">
+
+    <div class="contact">
+      <h3>Liên hệ với chúng tôi</h3>
+      <p>KP6, phường Linh Trung, TP Thủ Đức, TPHCM</p>
+      <p>012.345.6789</p>
+      <p>Tutorprovip@gmail.com</p>
+    </div>
+
+    <div class="contact">
+      <h3>Về Nhóm 09</h3>
+      <p><a href="./index.html">Giới thiệu</a></p>
+      <p><a href="./contact.html">Liên hệ</a></p>
+      <p><a href="./contact.html">Chính sách bảo mật</a></p>
+    </div>
+
+    <div class="contact">
+      <h3>contact with us</h3>
+      <p>Fanpage:tutorpromax1709</p>
+    </div>
+
+  </div>
+</footer>
+
+
+<script>
+
+  let g_temp = 0;
+  let g_humi = 0;
+  let g_CO_ppm = 0;
+  let g_dust = 0;
+
+
+  function fetchData() {
+    fetch('/api/data')
+      .then(response => response.json())
+      .then(data => {
+        // Lấy giá trị của temp từ dữ liệu nhận được
+        //const temp = data.temp + " °C";
+        g_temp = data.temp;
+        g_humi = data.humi;
+        g_CO_ppm = data.CO_ppm;
+        g_dust = data.dust_ppm;
+        ShowChart_DHT22();
+        ShowChart_MQ7();
+        ShowChart_DUST();
+        //showLineGraph();
+        //show_chart2line();
+        // Hiển thị giá trị temp lên màn hình
+        //document.getElementById('value_temp').innerText = temp;
+      })
+      .catch(error => console.error('Error:', error));
+  }
+//-----
+function fetchDataMaxMin() {
+    fetch('/api/maxmin')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.temp.min);
+        document.getElementById('tempmin').innerText = "Min: "+ data.temp.min+ "°C at\n" + data.temp.date_min ;
+        document.getElementById('tempmax').innerText = "Max: "+ data.temp.max+ "°C at\n" + data.temp.date_max ;
+
+        document.getElementById('humimin').innerText = "Min: "+ data.humi.min+ "% at\n" + data.humi.date_min ;
+        document.getElementById('humimax').innerText = "Max: "+ data.humi.max+ "% at\n" + data.humi.date_max ;
+
+        document.getElementById('comin').innerText = "Min: "+ data.CO.min+ " ppm at\n" + data.CO.date_min ;
+        document.getElementById('comax').innerText = "Max: "+ data.CO.max+ " ppm at\n" + data.CO.date_max ;
+        
+        document.getElementById('dustmin').innerText = "Min: "+ data.dust.min+ " µg/m³ at\n" + data.dust.date_min ;
+        document.getElementById('dustmax').innerText = "Max: "+ data.dust.max+ " µg/m³ at\n" + data.dust.date_max ;
+        
+      })
+      .catch(error => console.error('Error:', error));
+  }
+  function fetchRecord() {
+    fetch('/api/record')
+      .then(response => response.json())
+      .then(data => {
+        Check_show(data);
+      })
+      .catch(error => console.error('Error:', error));
+  }
+  function Check_show(data) {
+    console.log(data.temp);
+    const chartDiv = document.querySelector('.chart_tmp');
+    const chartDiv_CO = document.getElementById("chartMQ7");
+    const chartDiv_dust = document.getElementById("chartDust");
+    const table_ = document.querySelector('.minmax_display');
+    const line_ = document.getElementById("ChartLine");
+    const line_2 = document.getElementById("Chart2Line");
+    if(table_.style.display === 'block'){
+      line_2.style.display = 'none';
+      line_.style.display = 'none';
+    }
+    if(chartDiv.style.display === 'none' && chartDiv_CO.style.display ==='none' && chartDiv_dust.style.display ==='none'){
+      line_.style.display = 'none';
+      line_2.style.display = 'none';
+    }
+    if(chartDiv.style.display === 'block' && chartDiv_CO.style.display ==='none' && chartDiv_dust.style.display ==='none'){
+      //temp-humi show
+      line_2.style.display = 'block';
+      line_.style.display = 'none';
+      line_2.style.marginTop = '3%';
+      line_2.style.marginLeft = '7%';
+      var str = "Temperature and Huminity graph"
+      show_chart2line(str, data.temp, data.humi);
+
+    }
+    if(chartDiv.style.display === 'none' && chartDiv_CO.style.display ==='block' && chartDiv_dust.style.display ==='none'){
+      line_2.style.display = 'none';
+      line_.style.display = 'block';
+      var str = "CO gas concentration graph"
+      var str_ = "CO_ppm"
+      showLineGraph(str,str_, data.CO);
+    }
+    if(chartDiv.style.display === 'none' && chartDiv_CO.style.display ==='none' && chartDiv_dust.style.display ==='block'){
+      line_2.style.display = 'none';
+      line_.style.display = 'block';
+      var str = "Dust concentration graph"
+      var str_ = "dust µg/m³ "
+      showLineGraph(str,str_, data.dust);
+    }
+  }
+  // Lặp lại yêu cầu sau mỗi 5 giây
+  document.addEventListener('DOMContentLoaded', fetchDataMaxMin);
+  document.addEventListener('DOMContentLoaded', fetchData);
+  document.addEventListener('DOMContentLoaded', fetchRecord);
+  setInterval(fetchData, 1000); // 5000 miliseconds = 5 seconds
+  setInterval(fetchDataMaxMin, 1000);
+  setInterval(fetchRecord, 1000);
+  //---------
+  function ShowChart_DHT22() {
+    var chart = JSC.chart('chartDiv', {
+      debug: true,
+      title: {
+        label_text: 'Temperature',
+        position: 'center'
+
+      },
+      legend_visible: false,
+      defaultTooltip_enabled: false,
+      xAxis_spacingPercentage: 0.4,
+      yAxis: [
+        {
+          id: 'ax1',
+          defaultTick: {
+            padding: 10,
+            enabled: false
+          },
+          customTicks: [0, 16, 35, 50, 80, 100],
+          line: {
+            width: 10,
+            breaks: {},
+            color: 'smartPalette:pal1'
+          },
+          scale_range: [0, 100]
+        }
+      ],
+      defaultSeries: {
+        type: 'gauge column roundcaps',
+        shape: {
+          label: {
+            text: '%max' + "°C",
+            align: 'center',
+            verticalAlign: 'middle',
+            style_fontSize: 20
+          }
+        }
+      },
+      series: [
+        {
+          type: 'column roundcaps',
+          name: 'Temperatures',
+          yAxis: 'ax1',
+          palette: {
+            id: 'pal1',
+            pointValue: '%yValue',
+            ranges: [
+              { value: 0, color: '#ADD8E6' },
+              { value: 16.005, color: '#77E6B4' },
+              { value: 35, color: '#FCEB73' },
+              { value: 50, color: '#FFD221' },
+              { value: [80, 100], color: '#FF5353' }
+            ]
+          },
+          points: [['x', [0, g_temp]]]  // sửa nhiệt độ ở đây
+        }
+      ]
+    });
+    //-----------Humidity-------------------------
+    var chart = JSC.chart('chartDiv2', {
+      debug: true,
+      title: {
+        label_text: 'Humidity',
+        position: 'center'
+
+      },
+      legend_visible: false,
+      defaultTooltip_enabled: false,
+      xAxis_spacingPercentage: 0.4,
+      yAxis: [
+        {
+          id: 'ax1',
+          defaultTick: {
+            padding: 10,
+            enabled: false
+          },
+          customTicks: [0, 16, 35, 50, 80, 100],
+          line: {
+            width: 10,
+            breaks: {},
+            color: 'smartPalette:pal1'
+          },
+          scale_range: [0, 100]
+        }
+      ],
+      defaultSeries: {
+        type: 'gauge column roundcaps',
+        shape: {
+          label: {
+            text: '%max' + "%",
+            align: 'center',
+            verticalAlign: 'middle',
+            style_fontSize: 28
+          }
+        }
+      },
+      series: [
+        {
+          type: 'column roundcaps',
+          name: 'Humidity',
+          yAxis: 'ax1',
+          palette: {
+            id: 'pal1',
+            pointValue: '%yValue',
+            ranges: [
+              { value: 0, color: '#ADD8E6' },
+              { value: 16.005, color: '#77E6B4' },
+              { value: 35, color: '#FCEB73' },
+              { value: 50, color: '#FFD221' },
+              { value: [80, 100], color: '#FF5353' }
+            ]
+          },
+          points: [['x', [0, g_humi]]] //chỉnh sửa độ ẩm ở đây.
+        }
+      ]
+    });
+
+  }
+  //--------------
+  function ShowChart_MQ7() {
+    var chart = JSC.chart('chartMQ7', {
+      debug: true,
+      title: {
+        label_text: 'CO gas concentration',
+        position: 'center'
+
+      },
+      legend_visible: false,
+      defaultTooltip_enabled: false,
+      xAxis_spacingPercentage: 0.4,
+      yAxis: [
+        {
+          id: 'ax1',
+          defaultTick: {
+            padding: 10,
+            enabled: false
+          },
+          customTicks: [20, 416, 812, 1208, 1604, 2000],
+          line: {
+            width: 10,
+            breaks: {},
+            color: 'smartPalette:pal1'
+          },
+          scale_range: [20, 2000]
+        }
+      ],
+      defaultSeries: {
+        type: 'gauge column roundcaps',
+        shape: {
+          label: {
+            text: '%max' + "ppm",
+            align: 'center',
+            verticalAlign: 'middle',
+            style_fontSize: 20
+          }
+        }
+      },
+      series: [
+        {
+          type: 'column roundcaps',
+          name: 'Temperatures',
+          yAxis: 'ax1',
+          palette: {
+            id: 'pal1',
+            pointValue: '%yValue',
+            ranges: [
+              { value: 20, color: '#ADD8E6' },
+              { value: 416, color: '#77E6B4' },
+              { value: 812, color: '#FCEB73' },
+              { value: 1208, color: '#FFD221' },
+              { value: [1604, 2000], color: '#FF5353' }
+            ]
+          },
+          points: [['x', [0, g_CO_ppm]]]  // sửa nhiệt độ ở đây
+        }
+      ]
+    });
+  }
+
+  //-------DUST-----------
+  function ShowChart_DUST() {
+    var chart = JSC.chart('chartDust', {
+      debug: true,
+      title: {
+        label_text: 'DUST concentration',
+        position: 'center'
+
+      },
+      legend_visible: false,
+      defaultTooltip_enabled: false,
+      xAxis_spacingPercentage: 0.4,
+      yAxis: [
+        {
+          id: 'ax1',
+          defaultTick: {
+            padding: 10,
+            enabled: false
+          },
+          customTicks: [0, 120, 230, 350, 460, 580],
+          line: {
+            width: 10,
+            breaks: {},
+            color: 'smartPalette:pal1'
+          },
+          scale_range: [0, 580]
+        }
+      ],
+      defaultSeries: {
+        type: 'gauge column roundcaps',
+        shape: {
+          label: {
+            text: '%max' + "µg/m³",
+            align: 'center',
+            verticalAlign: 'middle',
+            style_fontSize: 20
+          }
+        }
+      },
+      series: [
+        {
+          type: 'column roundcaps',
+          name: 'DUST',
+          yAxis: 'ax1',
+          palette: {
+            id: 'pal1',
+            pointValue: '%yValue',
+            ranges: [
+              { value: 20, color: '#ADD8E6' },
+              { value: 120, color: '#77E6B4' },
+              { value: 230, color: '#FCEB73' },
+              { value: 350, color: '#FFD221' },
+              { value: [460, 580], color: '#FF5353' }
+            ]
+          },
+          points: [['x', [0, g_dust]]]  // Dust val
+        }
+      ]
+    });
+  }
+  //-------------------------------------
+function showLineGraph(val, val_, arr) {
+  var chart = JSC.chart('ChartLine', {
+    debug: true,
+    type: 'line',
+    title_label_text: val,
+    legend_position: 'inside bottom right',
+    toolbar_items: {
+      'Line Type': {
+        type: 'select',
+        label_style_fontSize: 13,
+        margin: 5,
+        items: 'Line,Step,Spline',
+        events_change: function(val) {
+          chart.series().options({ type: val });
+        }
+      }
+    },
+    xAxis: { scale_type: '' },
+    series: [
+      {
+        name: val_,
+        points: arr
+      }
+    ]
+  });
+  
+}
+
+function show_chart2line(val_, arr1, arr2) {
+  var chart = JSC.chart('Chart2Line', {
+        debug: true,
+        type: 'line',
+        title_label_text: val_,
+        legend_position: 'inside bottom right',
+        toolbar_items: {
+          'Line Type': {
+            type: 'select',
+            label_style_fontSize: 13,
+            margin: 5,
+            items: 'Line,Step,Spline',
+            events_change: function(val) {
+              chart.series().options({ type: val });
+            }
+          }
+        },
+        xAxis: { scale_type: '' },
+        series: [
+          {
+            name: 'Temp',
+            points: arr1
+          },
+          {
+            name: 'Humi',
+            points: arr2
+          }
+          
+        ]
+      });
+}
+
+</script>
+
+
+
+</html>

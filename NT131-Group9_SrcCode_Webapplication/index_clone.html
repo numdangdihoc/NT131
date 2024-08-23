@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đồ án nhúng</title>
+</head>
+<script src="https://code.jscharting.com/latest/jscharting.js"></script>
+<script type="text/javascript" src="https://code.jscharting.com/latest/modules/types.js"></script>
+
+
+<body>
+  <h1>Đồ án môn hệ thống Nhúng mạng không dây</h1>
+  <div style="display: flex;">
+    <div id="chartDiv" style="max-width: 640px; height: 230px; margin-right: -14%;"></div>
+    <div id="chartDiv2" style="max-width: 640px; height: 230px; margin-right: -14%"></div>
+  </div>
+
+  <div style="display: flex;">
+    <div id="chartMQ7" style="max-width: 640px; height: 230px; margin-right: -14%;"></div>
+  </div>
+  
+  
+
+</body>
+
+
+<script>
+
+  let g_temp = 0;
+  let g_humi = 0; 
+  let g_CO_ppm = 0;
+
+  function fetchData() {
+    fetch('/api/data')
+      .then(response => response.json())
+      .then(data => {
+        // Lấy giá trị của temp từ dữ liệu nhận được
+        //const temp = data.temp + " °C";
+        g_temp = data.temp;
+        g_humi = data.humi;
+        ShowChart_DHT22();
+        ShowChart_MQ7();
+        // Hiển thị giá trị temp lên màn hình
+        //document.getElementById('value_temp').innerText = temp;
+      })
+      .catch(error => console.error('Error:', error));
+  }
+ 
+  // Lặp lại yêu cầu sau mỗi 5 giây
+  document.addEventListener('DOMContentLoaded', fetchData);
+  setInterval(fetchData, 5000); // 5000 miliseconds = 5 seconds
+  //---------
+  function ShowChart_DHT22() {
+    var chart = JSC.chart('chartDiv', {
+      debug: true,
+      title: {
+        label_text: 'Temperature',
+        position: 'center'
+
+      },
+      legend_visible: false,
+      defaultTooltip_enabled: false,
+      xAxis_spacingPercentage: 0.4,
+      yAxis: [
+        {
+          id: 'ax1',
+          defaultTick: {
+            padding: 10,
+            enabled: false
+          },
+          customTicks: [0, 16, 35, 50, 80, 100],
+          line: {
+            width: 10,
+            breaks: {},
+            color: 'smartPalette:pal1'
+          },
+          scale_range: [0, 100]
+        }
+      ],
+      defaultSeries: {
+        type: 'gauge column roundcaps',
+        shape: {
+          label: {
+            text: '%max' + "°C",
+            align: 'center',
+            verticalAlign: 'middle',
+            style_fontSize: 20
+          }
+        }
+      },
+      series: [
+        {
+          type: 'column roundcaps',
+          name: 'Temperatures',
+          yAxis: 'ax1',
+          palette: {
+            id: 'pal1',
+            pointValue: '%yValue',
+            ranges: [
+              { value: 0, color: '#ADD8E6' },
+              { value: 16.005, color: '#77E6B4' },
+              { value: 35, color: '#FCEB73' },
+              { value: 50, color: '#FFD221' },
+              { value: [80, 100], color: '#FF5353' }
+            ]
+          },
+          points: [['x', [0, g_temp]]]  // sửa nhiệt độ ở đây
+        }
+      ]
+    });
+    //-----------Humidity-------------------------
+    var chart = JSC.chart('chartDiv2', {
+      debug: true,
+      title: {
+        label_text: 'Humidity',
+        position: 'center'
+
+      },
+      legend_visible: false,
+      defaultTooltip_enabled: false,
+      xAxis_spacingPercentage: 0.4,
+      yAxis: [
+        {
+          id: 'ax1',
+          defaultTick: {
+            padding: 10,
+            enabled: false
+          },
+          customTicks: [0, 16, 35, 50, 80, 100],
+          line: {
+            width: 10,
+            breaks: {},
+            color: 'smartPalette:pal1'
+          },
+          scale_range: [0, 100]
+        }
+      ],
+      defaultSeries: {
+        type: 'gauge column roundcaps',
+        shape: {
+          label: {
+            text: '%max' + "%",
+            align: 'center',
+            verticalAlign: 'middle',
+            style_fontSize: 28
+          }
+        }
+      },
+      series: [
+        {
+          type: 'column roundcaps',
+          name: 'Humidity',
+          yAxis: 'ax1',
+          palette: {
+            id: 'pal1',
+            pointValue: '%yValue',
+            ranges: [
+              { value: 0, color: '#ADD8E6' },
+              { value: 16.005, color: '#77E6B4' },
+              { value: 35, color: '#FCEB73' },
+              { value: 50, color: '#FFD221' },
+              { value: [80, 100], color: '#FF5353' }
+            ]
+          },
+          points: [['x', [0, g_humi]]] //chỉnh sửa độ ẩm ở đây.
+        }
+      ]
+    });
+
+  }
+
+
+
+
+
+  function ShowChart_MQ7() {
+    var chart = JSC.chart('chartMQ7', {
+      debug: true,
+      title: {
+        label_text: 'CO gas concentration',
+        position: 'center'
+
+      },
+      legend_visible: false,
+      defaultTooltip_enabled: false,
+      xAxis_spacingPercentage: 0.4,
+      yAxis: [
+        {
+          id: 'ax1',
+          defaultTick: {
+            padding: 10,
+            enabled: false
+          },
+          customTicks: [20, 416, 812, 1208, 1604, 2000],
+          line: {
+            width: 10,
+            breaks: {},
+            color: 'smartPalette:pal1'
+          },
+          scale_range: [20, 2000]
+        }
+      ],
+      defaultSeries: {
+        type: 'gauge column roundcaps',
+        shape: {
+          label: {
+            text: '%max' + "ppm",
+            align: 'center',
+            verticalAlign: 'middle',
+            style_fontSize: 20
+          }
+        }
+      },
+      series: [
+        {
+          type: 'column roundcaps',
+          name: 'Temperatures',
+          yAxis: 'ax1',
+          palette: {
+            id: 'pal1',
+            pointValue: '%yValue',
+            ranges: [
+              { value: 20, color: '#ADD8E6' },
+              { value: 416, color: '#77E6B4' },
+              { value: 812, color: '#FCEB73' },
+              { value: 1208, color: '#FFD221' },
+              { value: [1604, 2000], color: '#FF5353' }
+            ]
+          },
+          points: [['x', [0, g_CO_ppm]]]  // sửa nhiệt độ ở đây
+        }
+      ]
+    });
+  }
+
+</script>
+
+</html>

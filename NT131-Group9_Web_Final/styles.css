@@ -1,0 +1,50 @@
+.tg  {border-collapse:collapse;border-color:#aaa;border-spacing:0;}
+.tg td{background-color:#fff;border-color:#aaa;border-style:solid;border-width:1px;color:#333;
+  font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{background-color:#f38630;border-color:#aaa;border-style:solid;border-width:1px;color:#fff;
+  font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-d9mu{background-color:#f38630;color:#ffffff;text-align:center;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+
+
+.login-container {
+  background-color: #fff;
+  margin-left: 45%;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  text-align: center;
+}
+.login-container h2 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+.login-container input {
+  width: calc(100% - 20px);
+  padding: 5px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.login-container button {
+  width: 100%;
+  padding: 5px;
+  background-color: #007BFF;
+  border: none;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.login-container button:hover {
+  background-color: #0056b3;
+}
+#message {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 12px;
+}
